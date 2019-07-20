@@ -1,5 +1,38 @@
-﻿
+﻿<h1>Logic Board</h1>
 
-<h1>Logic Board</h1>
+<p>
+    Board version: @RootObject.Version
+</p>
+
+<div id="canvas" style="background-color: black; width: 800px; height: 600px">
+    <svg width="800" height="600">
+        <g>
+
+            <rect x="100" y="100" width="30" height="50" fill="white">Test</rect>
+            <text x="100" y="112" font-size="12" fill="black">AND</text>
+        </g>
+        <line x1="0" y1="0" x2="800" y2="600" style="stroke:rgb(30,30,30);stroke-width:2" />
+    </svg>
+</div>
+
+<h2>Controls</h2>
+
+<button class="btn btn-secondary">NOT</button>
+<button class="btn btn-secondary">OR</button>
+<button class="btn btn-secondary">AND</button>
+<button class="btn btn-secondary">NOR</button>
+<button class="btn btn-secondary">NAND</button>
+<button class="btn btn-secondary">XOR</button>
+<button class="btn btn-secondary">Delete</button>
+<button class="btn btn-secondary">Connect</button>
 
 
+@code {
+    [Parameter]
+    private Breadstone.LogicCircuit.Model.RootObject RootObject { get; set; } = new LogicCircuit.Model.RootObject();
+
+    private void click()
+    {
+
+    }
+}
