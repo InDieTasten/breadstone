@@ -1,5 +1,21 @@
 ﻿@page "/"
 
-<LogicBoard />
+<Breadstone.Blazor.Pages.LogicBoard.LogicBoard RootObject="RootObject" />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    Breadstone.LogicCircuit.Model.RootObject RootObject = new LogicCircuit.Model.RootObject()
+    {
+        Circuit = new LogicCircuit.Model.RootCircuit()
+        {
+            Components = new List<LogicCircuit.Model.Component>()
+            {
+                new LogicCircuit.Model.Component()
+                {
+                    Id = "0",
+                    Type = "$AND",
+                    Position = new LogicCircuit.Model.Position(100, 100)
+                }
+            }
+        }
+    };
+}

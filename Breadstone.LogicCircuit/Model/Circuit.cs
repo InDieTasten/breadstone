@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Breadstone.LogicCircuit.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Breadstone.LogicCircuit.Model
 {
     public class Circuit
     {
         public string Id { get; set; }
-        public List<Component> Components { get; set; }
-        public List<Pin> Pins { get; set; }
-        public List<Wiring> Wiring { get; set; }
-
-
-        public void AddComponent(Component component)
-        {
-            Components.Add(component);
-        }
+        public List<Component> Components { get; set; } = new List<Component>();
+        public List<Pin> Pins { get; set; } = new List<Pin>();
+        public List<Wiring> Wiring { get; set; } = new List<Wiring>();
     }
 }

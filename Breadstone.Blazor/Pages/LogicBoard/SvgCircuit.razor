@@ -1,0 +1,37 @@
+﻿
+<svg width="800" height="600">
+    <g> <!-- Grid -->
+        <defs>
+            <pattern id="smallGrid" width="@smallGridSpacing" height="@smallGridSpacing" patternUnits="userSpaceOnUse">
+                <path d="M @smallGridSpacing 0 L 0 0 0 @smallGridSpacing" fill="none" stroke="gray" stroke-width="0.4" />
+            </pattern>
+            @{ 
+                var bigGridSpaceInPixels = smallGridSpacing * bigGridSpacing;
+            }
+            <pattern id="grid" width="@bigGridSpaceInPixels" height="@bigGridSpaceInPixels" patternUnits="userSpaceOnUse">
+                <rect width="@bigGridSpaceInPixels" height="@bigGridSpaceInPixels" fill="url(#smallGrid)" />
+                <path d="M @bigGridSpaceInPixels 0 L 0 0 0 @bigGridSpaceInPixels" fill="none" stroke="gray" stroke-width="0.8" />
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+    </g>
+    <g> <!-- Wiring -->
+        @foreach (var wiring in Circuit.Wiring)
+        {
+            <SvgWire Wiring="wiring" />
+        }
+    </g>
+    <g> <!-- Components -->
+        @foreach (var component in Circuit.Components)
+        {
+            <SvgComponent Component="component"/>
+        }
+    </g>
+</svg>
+
+@code {
+    [Parameter]
+    private Breadstone.LogicCircuit.Model.Circuit Circuit { get; set; }
+    private int smallGridSpacing = 10;
+    private int bigGridSpacing = 5;
+}
