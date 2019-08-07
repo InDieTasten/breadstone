@@ -22,9 +22,12 @@
         }
     </g>
     <g> <!-- Components -->
+        @{ 
+            var renderComponents = GetRenderComponents();
+        }
         @foreach (var component in Circuit.Components)
         {
-            <SvgComponent Component="component"/>
+            <SvgComponent Component="component" RenderComponents="renderComponents" />
         }
     </g>
 </svg>
@@ -34,4 +37,17 @@
     private Breadstone.LogicCircuit.Model.Circuit Circuit { get; set; }
     private int smallGridSpacing = 10;
     private int bigGridSpacing = 5;
+
+    List<RenderComponent> GetRenderComponents()
+    {
+        return new List<RenderComponent>()
+        {
+            new RenderComponent
+            {
+                Height = 100,
+                Width = 30,
+                Type = "$AND"
+            }
+        };
+    }
 }

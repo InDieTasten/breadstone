@@ -1,13 +1,12 @@
 ﻿using Breadstone.LogicCircuit.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Breadstone.LogicCircuit.Rendering
 {
     public class RenderComponent
     {
+        public string Type { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
@@ -37,6 +36,7 @@ namespace Breadstone.LogicCircuit.Rendering
 
             return new RenderComponent
             {
+                Type = circuit.Id,
                 Width = componentWidth * RenderOptions.GridSnappingDistance,
                 Height = componentHeight * RenderOptions.GridSnappingDistance,
                 Pins = CalculatePinPositions(circuit.Pins, componentWidth, componentHeight)
@@ -64,23 +64,21 @@ namespace Breadstone.LogicCircuit.Rendering
             renderPins.AddRange(topRightRenderPins);
 
             // TOP_CENTER
+            var minX = topLeftRenderPins.Count() * RenderOptions.PinDistance + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
+            var maxX = topRightRenderPins.Count() * RenderOptions.PinDistance + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
+            var availableSpace = maxX - minX;
+            var unnecessarySpace = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).Count() * RenderOptions.PinDistance - availableSpace;
+            var topCenterPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
+            {
+                Id = pin.Id,
+                Position = new Position(minX + (unnecessarySpace / 2) + index * RenderOptions.PinDistance, 0)
+            });
+            renderPins.AddRange(topCenterPins);
 
+            // TODO remaining pins
 
-            throw new NotImplementedException();
-
+            return renderPins;
         }
-
-        private static int CalculateTopEdgeMinLength(Circuit circuit)
-        {
-            var topPins = circuit.Pins.Where(pin =>
-                            pin.ShellPosition == ShellPosition.TOP_LEFT
-                            || pin.ShellPosition == ShellPosition.TOP_CENTER
-                            || pin.ShellPosition == ShellPosition.TOP_RIGHT);
-
-            return CalculateMinEdgeLength(topPins);
-        }
-
-
 
         private static int CalculateMinEdgeLength(IEnumerable<Pin> edgePins)
         {

@@ -1,8 +1,15 @@
-﻿<g>
-    <rect x="@Component.Position.X" y="@Component.Position.Y" width="30" height="50" style="fill:rgb(61, 61, 61); stroke:rgb(128, 128, 128)"  />
-</g>
+﻿<svg x="@Component.Position.X" y="@Component.Position.Y">
+    @{ 
+        var renderComponent = RenderComponents.First(component => component.Type == Component.Type);
+    }
+    <rect x="0" y="0" width="@renderComponent.Width" height="@renderComponent.Height" style="fill:rgb(61, 61, 61); stroke:rgb(128, 128, 128)"  />
+
+</svg>
 
 @code {
     [Parameter]
     private Breadstone.LogicCircuit.Model.Component Component { get; set; }
+
+    [Parameter]
+    private System.Collections.Generic.List<Breadstone.LogicCircuit.Rendering.RenderComponent> RenderComponents { get; set; }
 }
