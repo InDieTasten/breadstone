@@ -1,11 +1,9 @@
-name: ASP.NET Core CI
+name: Blazor GH-Pages CD
 
 on:
   push:
     branches:
-      - master
-  schedule:
-    - cron 0 15 * * *
+    - master
 
 jobs:
   build:
@@ -18,5 +16,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.0.100-preview6-012264
-    - name: Build with dotnet
+    - name: Build standalone SPA
       run: dotnet publish --configuration Release
