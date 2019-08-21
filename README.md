@@ -26,8 +26,11 @@ The roadmap looks as follows:
   - Reusable (custom) components
   - Circuit emulation
   - Auto-layouting of components and wiring
+  - (Parametric component design)
+  - (Wire bundling/splitting alias bus support)
 - Complex circuit to flat circuit converter
 - Flat circuit to minecraft blocks converter
   - In-App 3D redstone emulation and rendering (isometric SVG-rendering probably, or maybe via WebGL)
   - Trimming unused wire paths
   - Layouting engine with support for space and timing boundaries
+  - Export to schematic file format or similar
