@@ -1,4 +1,4 @@
-name: Blazor GH-Pages CD
+name: Build Blazor App
 
 on:
   push:
