@@ -22,10 +22,12 @@ jobs:
     - name: Build standalone SPA
       run: dotnet publish --configuration Release
       
-    - name: GitHub Pages Deploy
-      uses: maxheld83/ghpages@v0.2.1
-      with:
-        GH_PAT: ${{ secrets.GH_PAT }}
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@2.0.0
       env:
-        BUILD_DIR: ./Breadstone.Blazor/bin/Release/netstandard2.0/publish/Breadstone.Blazor/dist
+        ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+        BRANCH: gh-pages
+        FOLDER: ./Breadstone.Blazor/bin/Release/netstandard2.0/publish/Breadstone.Blazor/dist
+        COMMIT_EMAIL: indietasten@gmail.com
+        COMMIT_NAME: InDieTasten
 
