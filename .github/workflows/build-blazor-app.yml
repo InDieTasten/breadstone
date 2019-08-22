@@ -27,4 +27,4 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.GH_PAT }}
         BRANCH: gh-pages
-        FOLDER: ./Breadstone.Blazor/bin/Release/netstandard2.0/publish/Breadstone.Blazor/dist
+        FOLDER: Breadstone.Blazor/bin/Release/netstandard2.0/publish/Breadstone.Blazor/dist
