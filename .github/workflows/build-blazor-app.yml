@@ -11,10 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout code
+      uses: actions/checkout@v1
+      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.0.100-preview6-012264
+        
     - name: Build standalone SPA
       run: dotnet publish --configuration Release
+      
+    - name: GitHub Pages Deploy
+      uses: maxheld83/ghpages@v0.2.1
+      with:
+        GH_PAT: {{ secrets.GH_PAT }}
+      env:
+        BUILD_DIR: ./Breadstone.Blazor/bin/Debug/netstandard2.0/publish/Breadstone.Blazor/dist
+
