@@ -27,5 +27,5 @@ jobs:
       with:
         GH_PAT: ${{ secrets.GH_PAT }}
       env:
-        BUILD_DIR: ./Breadstone.Blazor/bin/Debug/netstandard2.0/publish/Breadstone.Blazor/dist
+        BUILD_DIR: ./Breadstone.Blazor/bin/Release/netstandard2.0/publish/Breadstone.Blazor/dist
 
