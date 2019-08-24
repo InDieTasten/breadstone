@@ -1,4 +1,4 @@
-name: Build Blazor App
+name: Build and deploy master to GH pages
 
 on:
   push:
