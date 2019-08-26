@@ -1,4 +1,4 @@
-﻿using Breadstone.LogicCircuit.Model;
+﻿using Breadstone.LogicCircuit.Model.Complex;
 using System.Collections.Generic;
 
 namespace Breadstone.LogicCircuit

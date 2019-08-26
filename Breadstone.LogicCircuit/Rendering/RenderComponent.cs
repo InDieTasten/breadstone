@@ -1,4 +1,4 @@
-﻿using Breadstone.LogicCircuit.Model;
+﻿using Breadstone.LogicCircuit.Model.Complex;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,7 +48,7 @@ namespace Breadstone.LogicCircuit.Rendering
             var renderPins = new List<RenderPin>();
 
             // TOP_LEFT
-            var topLeftRenderPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_LEFT).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
+            IEnumerable<RenderPin> topLeftRenderPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_LEFT).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
             {
                 Id = pin.Id,
                 Position = new Position(RenderOptions.PinCornerDistance + (index * RenderOptions.PinDistance), 0)
@@ -56,7 +56,7 @@ namespace Breadstone.LogicCircuit.Rendering
             renderPins.AddRange(topLeftRenderPins);
 
             // TOP_RIGHT
-            var topRightRenderPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_RIGHT).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
+            IEnumerable<RenderPin> topRightRenderPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_RIGHT).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
             {
                 Id = pin.Id,
                 Position = new Position(componentWidth - RenderOptions.PinCornerDistance - (index * RenderOptions.PinDistance), 0)
@@ -64,14 +64,14 @@ namespace Breadstone.LogicCircuit.Rendering
             renderPins.AddRange(topRightRenderPins);
 
             // TOP_CENTER
-            var minX = topLeftRenderPins.Count() * RenderOptions.PinDistance + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
-            var maxX = topRightRenderPins.Count() * RenderOptions.PinDistance + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
+            var minX = (topLeftRenderPins.Count() * RenderOptions.PinDistance) + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
+            var maxX = (topRightRenderPins.Count() * RenderOptions.PinDistance) + RenderOptions.PinCornerDistance + RenderOptions.PinGroupDistance;
             var availableSpace = maxX - minX;
-            var unnecessarySpace = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).Count() * RenderOptions.PinDistance - availableSpace;
-            var topCenterPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
+            var unnecessarySpace = (pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).Count() * RenderOptions.PinDistance) - availableSpace;
+            IEnumerable<RenderPin> topCenterPins = pins.Where(pin => pin.ShellPosition == ShellPosition.TOP_CENTER).OrderBy(pin => pin.Position.X).Select((pin, index) => new RenderPin()
             {
                 Id = pin.Id,
-                Position = new Position(minX + (unnecessarySpace / 2) + index * RenderOptions.PinDistance, 0)
+                Position = new Position(minX + (unnecessarySpace / 2) + (index * RenderOptions.PinDistance), 0)
             });
             renderPins.AddRange(topCenterPins);
 
@@ -82,7 +82,7 @@ namespace Breadstone.LogicCircuit.Rendering
 
         private static int CalculateMinEdgeLength(IEnumerable<Pin> edgePins)
         {
-            var edgePinGroups = edgePins.GroupBy(pin => pin.ShellPosition);
+            IEnumerable<IGrouping<ShellPosition, Pin>> edgePinGroups = edgePins.GroupBy(pin => pin.ShellPosition);
 
             return (edgePins.Count() * RenderOptions.PinDistance)
                 + ((edgePinGroups.Count() - 1) * RenderOptions.PinGroupDistance)

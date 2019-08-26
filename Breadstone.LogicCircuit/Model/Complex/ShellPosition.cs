@@ -1,4 +1,4 @@
-﻿namespace Breadstone.LogicCircuit.Model
+﻿namespace Breadstone.LogicCircuit.Model.Complex
 {
     public enum ShellPosition
     {

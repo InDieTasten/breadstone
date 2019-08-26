@@ -3,17 +3,17 @@
 <Breadstone.Blazor.Pages.LogicBoard.LogicBoard RootObject="RootObject" />
 
 @code {
-    Breadstone.LogicCircuit.Model.RootObject RootObject = new LogicCircuit.Model.RootObject()
+    Breadstone.LogicCircuit.Model.Complex.RootObject RootObject = new LogicCircuit.Model.Complex.RootObject()
     {
-        Circuit = new LogicCircuit.Model.RootCircuit()
+        Circuit = new LogicCircuit.Model.Complex.RootCircuit()
         {
-            Components = new List<LogicCircuit.Model.Component>()
+            Components = new List<LogicCircuit.Model.Complex.Component>()
             {
-                new LogicCircuit.Model.Component()
+                new LogicCircuit.Model.Complex.Component()
                 {
                     Id = "0",
                     Type = "$AND",
-                    Position = new LogicCircuit.Model.Position(100, 100)
+                    Position = new LogicCircuit.Model.Complex.Position(100, 100)
                 }
             }
         }

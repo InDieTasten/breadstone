@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Breadstone.LogicCircuit.Model
+namespace Breadstone.LogicCircuit.Model.Complex
 {
     public class Wiring
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Breadstone.LogicCircuit.Model
+namespace Breadstone.LogicCircuit.Model.Complex
 {
     public class Circuit
     {

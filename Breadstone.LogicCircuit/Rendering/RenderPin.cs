@@ -1,4 +1,4 @@
-﻿using Breadstone.LogicCircuit.Model;
+﻿using Breadstone.LogicCircuit.Model.Complex;
 
 namespace Breadstone.LogicCircuit.Rendering
 {
