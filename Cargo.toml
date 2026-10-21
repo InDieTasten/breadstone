@@ -1,0 +1,26 @@
+[package]
+name = "breadstone"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+publish = false
+
+[dependencies]
+anyhow = "=1.0.104"
+axum = { version = "=0.8.9", default-features = false, features = ["http1", "json", "tokio", "tracing"] }
+rust-embed = { version = "=8.12.0", features = ["mime-guess"] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+tokio = { version = "=1.53.2", features = ["rt-multi-thread", "macros", "signal", "net"] }
+tracing = "=0.1.44"
+tracing-subscriber = "=0.3.23"
+
+[dev-dependencies]
+tower = { version = "=0.5.3", features = ["util"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
