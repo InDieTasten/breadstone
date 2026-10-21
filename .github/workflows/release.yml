@@ -1,14 +1,15 @@
 name: Release
 
-# master -> image ghcr.io/indietasten/breadstone:sha-<short> -> tag-bump PR in InDieTasten/lab (merged right away), whose
-# push makes the lab deploy it. LAB_BUMP_TOKEN: fine-grained PAT, InDieTasten/lab only, contents + pull requests write.
+# master -> image ghcr.io/indietasten/breadstone:sha-<short> -> GitHub release sha-<short> -> tag-bump PR in
+# InDieTasten/lab (merged right away), whose push makes the lab deploy it.
+# LAB_BUMP_TOKEN: fine-grained PAT, InDieTasten/lab only, contents + pull requests write.
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 concurrency:
@@ -44,12 +45,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  bump-lab:
+  release:
     needs: image
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://breadstone.indietasten.net
+    env:
+      TAG: ${{ needs.image.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # idempotent on re-runs of the same commit
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" --target "$GITHUB_SHA" --verify-tag --generate-notes --title "$TAG"
+
+  bump-lab:
+    needs: [image, release]
+    runs-on: ubuntu-latest
     env:
       TAG: ${{ needs.image.outputs.tag }}
     steps:
