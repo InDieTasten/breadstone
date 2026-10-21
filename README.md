@@ -4,19 +4,39 @@ Breadstone is one of my side-projects, that will probably be forgotten in a mont
 
 Breadstone is the combination of BREADboard as in electronics prototyping and redSTONE as in minecraft circuitry.
 
-This blazor app is an experiment to attempt to create a circuit design software that supports export to minecraft redstone circuits.
+This is an experiment to attempt to create a circuit design software that supports export to minecraft redstone circuits.
 
-## Why blazor
+## What's this
 
-I think it's an interesting technology and I wanted to give it a try. If by any chance, I actually progress in this project any significant amount, then having near-native speed can also come in handy when it comes to circuit optimisation and layouting in the 3D world of minecraft to transpile logical circuits to as small as possible volumes of redstone.
+A Rust (axum) backend and a React (Vite + TypeScript) frontend, packaged as a single container image: the release
+build embeds `web/dist` into the binary, which serves the API under `/api` and the SPA for everything else.
+This is the fresh scaffold after the switch away from Blazor; the circuit editor itself is still to be built.
 
-## What are the formats
+## Repository layout
 
-The `spec` folder contains all definitions and specifications. Currently there is only a spec for intermediate storage of complex circuitry, and not yet any 3D format for blocks.
+- `src/` – axum API (`/healthz`, `/api/version`, `/api/circuits`) and the embedded SPA
+- `web/` – React frontend; `npm run dev` proxies `/api` to a locally running backend
+- `spec/` – format definitions: intermediate storage of complex circuitry (no 3D block format yet)
+
+## Development
+
+```
+cargo run                        # API + embedded UI on 0.0.0.0:8080 (UI served from disk in debug builds)
+cd web && npm ci && npm run dev  # UI on 5173 with HMR, /api proxied to :8080
+```
+
+Checks: `cargo fmt --check`, `cargo clippy --all-targets -- -- -D warnings`, `cargo test`, `npm run build`.
+
+## Deployment
+
+- PRs: CI runs the checks; PRs from this repository also get a preview slot at
+  `https://breadstone-pr-<N>.dev.indietasten.net` (removed when the PR closes).
+- Pushes to `master` build `ghcr.io/indietasten/breadstone:sha-<short>` (`edge` as well) and bump the stack in
+  `InDieTasten/lab`, which serves https://breadstone.indietasten.net.
 
 ## What's the progress
 
-Pretty much none. The app can currently dynamically render an SVG of some hardcoded circuit components with some pretty grid lines, but other than that, nothing works.
+The scaffold: the API answers, the UI lists (in-memory) circuits through it. Everything else is ahead.
 
 ## What's ahead
 
