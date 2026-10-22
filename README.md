@@ -31,8 +31,8 @@ Checks: `cargo fmt --check`, `cargo clippy --all-targets -- -- -D warnings`, `ca
 
 - PRs: CI runs the checks; PRs from this repository also get a preview slot at
   `https://breadstone-pr-<N>.dev.indietasten.net` (removed when the PR closes).
-- Pushes to `master` build `ghcr.io/indietasten/breadstone:sha-<short>` (`edge` as well) and bump the stack in
-  `InDieTasten/lab`, which serves https://breadstone.indietasten.net.
+- Pushes to `master` build `ghcr.io/indietasten/breadstone:sha-<short>` (`edge` as well), publish a GitHub release
+  `sha-<short>` and bump the stack in `InDieTasten/lab`, which serves https://breadstone.indietasten.net.
 
 ## What's the progress
 
