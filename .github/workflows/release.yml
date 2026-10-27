@@ -1,102 +1,22 @@
 name: Release
 
-# master -> image ghcr.io/indietasten/breadstone:sha-<short> -> GitHub release sha-<short> -> tag-bump PR in
-# InDieTasten/lab (merged right away), whose push makes the lab deploy it.
-# LAB_BUMP_TOKEN: fine-grained PAT, InDieTasten/lab only, contents + pull requests write.
+# master -> ghcr.io/indietasten/breadstone:sha-<short> and :edge, then the lab redeploys the breadstone stack at
+# https://breadstone.indietasten.net; this run fails if it doesn't come up healthy (shared image.yml of
+# InDieTasten/.github).
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   packages: write
-
-concurrency:
-  group: release
-  cancel-in-progress: false
-
-env:
-  IMAGE: ghcr.io/indietasten/breadstone
+  id-token: write
 
 jobs:
   image:
-    runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: tag
-        run: echo "tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
-            ${{ env.IMAGE }}:edge
-          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  release:
-    needs: image
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    environment:
-      name: production
+    uses: InDieTasten/.github/.github/workflows/image.yml@main
+    with:
+      image: breadstone
+      stack: breadstone
       url: https://breadstone.indietasten.net
-    env:
-      TAG: ${{ needs.image.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      - env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # idempotent on re-runs of the same commit
-          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
-          gh release create "$TAG" --target "$GITHUB_SHA" --verify-tag --generate-notes --title "$TAG"
-
-  bump-lab:
-    needs: [image, release]
-    runs-on: ubuntu-latest
-    env:
-      TAG: ${{ needs.image.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: InDieTasten/lab
-          token: ${{ secrets.LAB_BUMP_TOKEN }}
-          path: lab
-      - name: Bump the image tag
-        run: |
-          f=lab/stacks/breadstone/compose.yaml
-          sed -i -E "s|(image: ${IMAGE}:)[A-Za-z0-9._-]+|\1${TAG}|" "$f"
-          grep -q "image: ${IMAGE}:${TAG}" "$f"
-      - id: pr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          path: lab
-          token: ${{ secrets.LAB_BUMP_TOKEN }}
-          branch: bump/breadstone
-          delete-branch: true
-          sign-commits: true
-          commit-message: |
-            chore(breadstone): ${{ env.TAG }}
-
-            ${{ github.repository }}@${{ github.sha }}
-          title: "chore(breadstone): ${{ env.TAG }}"
-          body: "Deploys ${{ github.repository }}@${{ github.sha }} (`${{ env.IMAGE }}:${{ env.TAG }}`)."
-      - name: Merge
-        if: steps.pr.outputs.pull-request-number
-        env:
-          GH_TOKEN: ${{ secrets.LAB_BUMP_TOKEN }}
-        run: gh pr merge --repo InDieTasten/lab "${{ steps.pr.outputs.pull-request-number }}" --squash --delete-branch

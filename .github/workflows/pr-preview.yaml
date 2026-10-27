@@ -1,10 +1,11 @@
 name: PR preview
 
-# Builds the app image for every PR (the build is the CI check) and, for PRs from this repository, runs it at
-# https://breadstone-pr-<N>.dev.indietasten.net through the lab's preview deployer (auth: this job's OIDC token).
+# Builds the app image for every PR (the build is the CI check: `preview / build`) and, for PRs from this repository,
+# runs it at https://breadstone-pr-<N>.dev.indietasten.net; removed when the PR is closed (shared preview.yml of
+# InDieTasten/.github).
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
 
 permissions:
   contents: read
@@ -13,79 +14,8 @@ permissions:
   pull-requests: write
   deployments: write
 
-concurrency:
-  group: pr-preview-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
-env:
-  NAME: breadstone-pr-${{ github.event.pull_request.number }}
-  SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-
 jobs:
   preview:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - id: image
-        run: echo "ref=ghcr.io/indietasten/breadstone:pr-${{ github.event.pull_request.number }}-${PR_SHA::7}" >> "$GITHUB_OUTPUT"
-        env:
-          PR_SHA: ${{ github.event.pull_request.head.sha }}
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
-        if: env.SAME_REPO == 'true'
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: ${{ env.SAME_REPO == 'true' }}
-          tags: ${{ steps.image.outputs.ref }}
-          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Deploy preview
-        if: env.SAME_REPO == 'true'
-        env:
-          IMAGE: ${{ steps.image.outputs.ref }}
-        run: |
-          tok=$(curl -fsS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://preview.indietasten.net" | jq -r .value)
-          curl -fsS --retry 3 -X PUT -H "Authorization: Bearer $tok" -H 'Content-Type: application/json' \
-            -d "{\"image\": \"$IMAGE\", \"port\": 8080}" "https://preview.indietasten.net/envs/$NAME"
-          echo
-          url="https://$NAME.dev.indietasten.net"
-          for i in $(seq 1 30); do
-            [ "$(curl -s -o /dev/null -w '%{http_code}' "$url/")" = 200 ] && { echo "live: $url"; exit 0; }
-            sleep 2
-          done
-          echo "::error::$url did not answer 200 within a minute"; exit 1
-
-      - name: Deployment and comment
-        if: env.SAME_REPO == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const pr = context.payload.pull_request.number;
-            const url = `https://${process.env.NAME}.dev.indietasten.net`;
-            const { owner, repo } = context.repo;
-            const deployment = await github.rest.repos.createDeployment({
-              owner, repo, ref: context.payload.pull_request.head.sha, environment: `pr-preview-${pr}`,
-              description: `Preview for PR #${pr}`, auto_merge: false, required_contexts: [],
-              transient_environment: true, production_environment: false,
-            });
-            await github.rest.repos.createDeploymentStatus({
-              owner, repo, deployment_id: deployment.data.id, state: 'success', environment_url: url,
-              description: 'Preview is live',
-            });
-            const body = [
-              '## 🚀 Preview Deployment', '',
-              `🔗 **Preview URL**: ${url}`, '',
-              `Commit ${context.payload.pull_request.head.sha.slice(0, 7)}. Removed when the PR is closed (or after 14 days without a new commit).`,
-            ].join('\n');
-            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number: pr });
-            const mine = comments.find(c => c.user.type === 'Bot' && c.body.includes('Preview Deployment'));
-            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
-            else await github.rest.issues.createComment({ owner, repo, issue_number: pr, body });
+    uses: InDieTasten/.github/.github/workflows/preview.yml@main
+    with:
+      image: breadstone
