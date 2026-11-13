@@ -104,3 +104,433 @@ li {
 .error {
   color: var(--accent);
 }
+
+a {
+  color: var(--accent);
+  text-underline-offset: 2px;
+}
+
+.topnav {
+  max-width: 42rem;
+  margin: 1.75rem auto 0;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.topnav a {
+  color: var(--wire);
+  text-decoration: none;
+}
+
+.topnav a:hover,
+.topnav a.current {
+  color: var(--text);
+}
+
+.topnav + main {
+  padding-top: 1.25rem;
+}
+
+.lead {
+  color: var(--muted);
+}
+
+.wiki-group h3 {
+  margin: 1.5rem 0 0.25rem;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.term-link {
+  font-weight: 600;
+}
+
+.aliases,
+.aliases-line {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.def {
+  color: var(--muted);
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+.badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.55rem;
+  border-radius: 1rem;
+  background: #2a3038;
+  color: var(--muted);
+}
+
+.badge.version {
+  color: var(--wire);
+}
+
+.definition {
+  font-size: 1.05rem;
+}
+
+.body-section h3 {
+  margin-top: 1.5rem;
+}
+
+figure.diagram {
+  margin: 1.25rem 0 0;
+  background: var(--bg);
+  border: 1px solid #2a3038;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow-x: auto;
+}
+
+figure.diagram figcaption {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.diagram-svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.svg-text {
+  fill: var(--text);
+}
+
+.svg-text.dim {
+  fill: var(--muted);
+}
+
+.grid line {
+  stroke: #272c34;
+}
+
+.ghost {
+  fill: none;
+  stroke: #3a4150;
+  stroke-dasharray: 4 3;
+}
+
+aside.bedrock {
+  border-left: 3px solid var(--wire);
+  background: rgba(122, 132, 80, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+aside.bedrock p {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+}
+
+.badge.bedrock-badge {
+  background: var(--wire);
+  color: #14161a;
+  flex: none;
+}
+
+.game {
+  margin-top: 0.5rem;
+}
+
+.game-hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: -0.25rem;
+}
+
+.deck-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1rem 0;
+}
+
+.chip {
+  background: #2a3038;
+  color: var(--muted);
+  border: 1px solid #3a4150;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+  border-radius: 1rem;
+  text-transform: none;
+  height: auto;
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.progress {
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+button.reset {
+  background: none;
+  border: none;
+  color: var(--wire);
+  padding: 0;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid #2a3038;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  min-height: 10rem;
+}
+
+.flip-card {
+  position: relative;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+}
+
+.flip-card.flipped {
+  transform: rotateX(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg);
+  border: 1px solid #2a3038;
+  border-radius: 0.75rem;
+}
+
+.card-face.back {
+  transform: rotateX(180deg);
+}
+
+.card-term {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.card-definition {
+  margin: 0;
+  color: var(--text);
+}
+
+.card-hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+button.secondary {
+  background: #2a3038;
+  color: var(--text);
+}
+
+.jump {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.done-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.match-board {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.match-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.match-cell {
+  background: var(--bg);
+  border: 1px solid #3a4150;
+  color: var(--text);
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-transform: none;
+  height: auto;
+  white-space: normal;
+}
+
+.match-cell.def {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.match-cell.picked {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.match-cell.solved {
+  border-color: var(--wire);
+  color: var(--wire);
+  opacity: 0.55;
+  cursor: default;
+}
+
+.score-screen {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+}
+
+.score-screen.big {
+  font-size: 1.4rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.review {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.review .your-answer {
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.quiz-question {
+  font-weight: 500;
+}
+
+.quiz-term {
+  color: var(--accent);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.option {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid #3a4150;
+  color: var(--text);
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-transform: none;
+  height: auto;
+  white-space: normal;
+}
+
+.option.correct {
+  border-color: var(--wire);
+  background: rgba(122, 132, 80, 0.16);
+}
+
+.option.wrong {
+  border-color: var(--accent);
+  background: rgba(217, 79, 48, 0.12);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.puzzle-prompt {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.option-chips {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.option-chip {
+  font-variant-numeric: tabular-nums;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.explain {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.explain.ok {
+  color: var(--wire);
+}
+
+.explain.bad {
+  color: var(--accent);
+}
+
+.wave-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+

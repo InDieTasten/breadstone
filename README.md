@@ -16,6 +16,7 @@ This is the fresh scaffold after the switch away from Blazor; the circuit editor
 
 - `src/` – axum API (`/healthz`, `/api/version`, `/api/circuits`) and the embedded SPA
 - `web/` – React frontend; `npm run dev` proxies `/api` to a locally running backend
+- `web/src/wiki/` – the redstone glossary: typed entries plus hand-drawn inline SVG diagrams
 - `spec/` – format definitions: intermediate storage of complex circuitry (no 3D block format yet)
 
 ## Development
@@ -38,12 +39,15 @@ Checks: `cargo fmt --check`, `cargo clippy --all-targets -- -- -D warnings`, `ca
 
 ## What's the progress
 
-The scaffold: the API answers, the UI lists (in-memory) circuits through it. Everything else is ahead.
+The scaffold, plus the redstone wiki: the API answers, the UI lists (in-memory) circuits through it, and
+`#/wiki` carries a ~35-entry glossary of redstone jargon with SVG examples and Bedrock notes — with flashcards,
+matching, quiz and arithmetic puzzle games under `#/wiki/play`. The circuit editor itself is the next big thing.
 
 ## What's ahead
 
 The roadmap looks as follows:
 
+- Redstone wiki — shipped: glossary of terminology with examples and games (issue #5)
 - Complex circuit editor
   - Reusable (custom) components
   - Circuit emulation
